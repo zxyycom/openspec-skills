@@ -1,35 +1,28 @@
 # OpenSpec Skills
 
-这个仓库维护一组面向 OpenSpec workflow 的 Codex skills。它存在的原因，是把 OpenSpec change 从零散命令调用整理成可复用的 agent 工作流：探索、提案、实现推进和归档各自有明确入口、边界和完成条件。
+`openspec-skills` 是对 OpenSpec skills 的二次开发。它的起点不是重新发明 OpenSpec，而是原有 OpenSpec skill 文本在实际使用中还不够理想：阶段边界不够清楚，指令脉络不够稳定，很多要求需要进一步改写，才能更好地引导 agent 完成 OpenSpec 工作流。
 
-这个仓库不是 OpenSpec CLI 的替代品。它的价值在于让 agent 在使用 OpenSpec 时稳定读取项目事实、维护 artifacts、尊重开放问题门禁，并把用户确认的决策沉淀到正确位置。
+OpenSpec 本身提供的是规格和变更流程；这个项目关注的是 agent 如何理解并执行这些流程。它要优化的是 skill 文本质量、任务进入姿态、artifact 写作边界、开放问题门禁和阶段之间的交接方式。
 
-## 项目意义
+## 为什么需要它
 
-OpenSpec change 往往跨越需求澄清、方案设计、任务执行和最终归档。缺少明确分工时，agent 容易提前实现、跳过开放问题、把临时讨论写进长期 spec，或在归档前遗漏验证。
+OpenSpec 的工作流天然分阶段：先探索问题，再形成 proposal、design、tasks 和 spec delta，然后执行任务，最后归档 change。对人类来说，这些阶段可以通过经验判断切换；对 agent 来说，如果 skill 文本没有清楚地区分阶段目标、暂停条件和输出位置，就容易提前实现、跳过问题确认、写错 artifact owner，或者把临时讨论带进长期规范。
 
-这个集合型 skill 仓库把流程拆成四类长期能力：
+`openspec-skills` 想解决的正是这一层问题。它把 OpenSpec 的流程重新写成更适合 agent 的工作方式，让每个阶段都有明确的任务姿态：什么时候只探索，什么时候可以生成 change，什么时候可以实现，什么时候可以归档。
 
-1. Explore：在实现前澄清问题、调查事实、比较方案和沉淀决策。
-2. Propose：创建可进入实现阶段的 proposal、design、tasks 和 delta artifacts。
-3. Apply Change：按任务清单推进实现，并同步任务状态、验证结果和阻塞说明。
-4. Archive Change：在实现和验收完成后归档 change，并输出可审计摘要。
+## 希望形成的能力
 
-拆分后的目标不是增加步骤，而是让每个阶段都有清晰的进入条件、输出边界和暂停条件。
+这个项目希望形成一组更高质量的 OpenSpec agent skills：
+
+1. Explore 负责澄清问题、调查事实和比较方案，不提前进入实现。
+2. Propose 负责把需求整理成可进入实现阶段的 artifacts。
+3. Apply Change 负责按任务清单推进实现，并同步任务状态和验证结果。
+4. Archive Change 负责在实现和验收完成后归档，并保留可审计摘要。
+
+这些 skill 的重点不是包装 CLI 命令，而是把 OpenSpec 的流程语义转成 agent 可以稳定遵守的文本指令。
 
 ## 发展方向
 
-这个仓库后续应继续强化四类能力：
+后续的发展重点会放在 OpenSpec skill 文本本身的质量提升上：更清楚的阶段边界，更少的歧义入口，更可靠的开放问题处理，更准确的 artifact owner，以及更稳定的 CLI 和文档协作方式。
 
-1. 更稳定的 CLI 协作：优先通过 OpenSpec CLI 获取结构化状态、instructions、delta 和验证结果。
-2. 更严格的阶段门禁：开放问题、artifact 缺失、任务未完成和验证失败都应有明确暂停或确认路径。
-3. 更清楚的 artifact owner：proposal、design、tasks、spec delta 和主 spec 各自只承接适合长期维护的信息。
-4. 更可审计的决策流：用户确认的范围、方案、边界、依赖和验证取舍应进入对应 change 的决策记录。
-
-新增 OpenSpec skill 时，应先判断它是否代表独立阶段或稳定工作姿态。只是现有阶段中的步骤、引用规则或输出格式，应优先放回对应 skill。
-
-## 与主仓库的关系
-
-本仓库只维护 OpenSpec workflow skills 的本体和随 skill 分发的资料。共享校验、打包、CI、发布和多 skill 维护文档由 `skills` 主仓库承接。
-
-这种拆分让 OpenSpec 相关技能可以作为一个集合独立演进，同时保持主仓库统一发现、校验和发布。
+长期来看，这个项目希望成为一组适合真实项目使用的 OpenSpec agent 工作流技能。它应该让 agent 更少凭感觉推进流程，更多依据清楚的阶段目标、已确认决策和可验证状态行动。
